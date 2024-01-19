@@ -5,7 +5,7 @@ void join_insert(string id, string pw, string email, string pnum)
     sqlite3 *db;
     char *err_msg = 0;
     
-    int rc = sqlite3_open("test.db", &db);
+    int rc = sqlite3_open("worknet", &db);
     
     if (rc != SQLITE_OK)
     {
