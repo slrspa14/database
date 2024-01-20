@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <unistd.h>
+#include <cstdlib>
+#include <ctime>
 
 void start_page();
 void start_image();
@@ -72,7 +74,6 @@ int join_page() // 회원가입 페이지
     //email
     while(1)
     {
-        // int rc = sqlite3_open("/home/aiot11/Downloads/worknet", &db);
         std::cout << "email:";
         std::cin >> join_email;
         while(1)
@@ -90,7 +91,6 @@ int join_page() // 회원가입 페이지
             else
                 break;
         }
-        // sqlite3_close(db); //DB 닫기
         break;
     }
 
@@ -108,7 +108,6 @@ int join_page() // 회원가입 페이지
         }
         while(1)
         {
-            // int rc = sqlite3_open("/home/aiot11/Downloads/worknet", &db);
             join = "SELECT PNUM FROM 'join' WHERE PNUM = '"+ join_pnum + "';";
 
             rc = sqlite3_prepare_v2(db, join.c_str(), -1, &res, 0);
@@ -124,7 +123,6 @@ int join_page() // 회원가입 페이지
             else
                 break;
         }
-        // sqlite3_close(db); //DB 닫기
         break;
     }
     
@@ -134,6 +132,12 @@ int join_page() // 회원가입 페이지
 
     sqlite3_finalize(res); //SQL 쿼리 핸들 정리
     sqlite3_close(db); //DB 닫기
+    std::cout << "회원가입이 완료되었습니다." << std::endl;
+    std::cout << "회원가입내역" << std::endl;
+    std::cout << join_id << std::endl;
+    std::cout << join_pw << std::endl;
+    std::cout << join_email << std::endl;
+    std::cout << join_pnum << std::endl;
     return 0;
 }
 
@@ -172,7 +176,6 @@ void log_in()
             std::cin >> log_pw;
         }
     }
-
 
 }
 int insert(std::string id, std::string pw, std::string email, std::string pnum)
