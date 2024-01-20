@@ -13,17 +13,11 @@
 
 using namespace std;
 
-// class test_work
-// {
-//     private:
-
-//     public:
+class db
+{
+    private:
     
-// };
-void start_image();
-void start_page();
-// void log_in();
-int join();
-void join_insert(std::string id, std::string pw, std::string email, std::string pnum);
-// int DataBaseOutput(std::string user);
+    public:
+    
+};
 #endif
