@@ -23,6 +23,7 @@ int main()
 
 int join_page() // 회원가입 페이지
 {
+    system("clear");
     sqlite3 *db; //핸들, 파일디스크립터같은
     char *err_msg = 0; // 오류메시지
     sqlite3_stmt* res;
@@ -136,6 +137,44 @@ int join_page() // 회원가입 페이지
     return 0;
 }
 
+void log_in()
+{
+    system("clear");
+    sqlite3 *db; //핸들, 파일디스크립터같은
+    char *err_msg = 0; // 오류메시지
+    sqlite3_stmt* res;
+
+    std::cout << "로그인페이지" << std::endl;
+    std::string log_id, log_pw, join;
+    int rc = sqlite3_open("/home/aiot11/Downloads/worknet", &db); //열고
+
+    std::cout << "ID:";
+    std::cin >> log_id;
+    std::cout << "PW:";
+    std::cin >> log_pw;
+    while(1)
+    {
+        join = " SELECT ID FROM 'join' WHERE ID = '" + log_id +"' AND '"+ log_pw +"';"; // 입력한 join_id랑 쿼리문 비교
+        rc = sqlite3_prepare_v2(db, join.c_str(), -1, &res, 0); // 준비
+        rc = sqlite3_step(res); // 실행하기
+        if(rc == SQLITE_ROW) // db랑 사용자 입력이 같다면 중복검사
+        {
+            std::cout << "로그인 성공" << std::endl;
+            std::cout << "공고페이지로 이동하기" << std::endl;
+        }
+        else
+        {
+            std::cout << "일치하는 ID 및 PW가 없습니다." << std::endl;
+            std::cout << "다시 입력해주세요." << std::endl;
+            std::cout << "ID:";
+            std::cin >> log_id;
+            std::cout << "PW";
+            std::cin >> log_pw;
+        }
+    }
+
+
+}
 int insert(std::string id, std::string pw, std::string email, std::string pnum)
 {
     sqlite3 *db;
