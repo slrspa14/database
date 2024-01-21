@@ -232,6 +232,8 @@ void log_in()
             std::cin >> log_pw;
         }
     }
+    sqlite3_finalize(res); //SQL 쿼리 핸들 정리
+    sqlite3_close(db); //DB 닫기
 }
 
 int callback(void *NotUsed,int argc,char **argv, char **azColName)
@@ -337,5 +339,42 @@ void announcement()
         std::cout << "error" << std::endl;
         exit(1);
     }
+    sqlite3_close(db); //DB 닫기
+}
+
+void test()
+{
+    sqlite3 *db; //핸들, 파일디스크립터같은
+    char *err_msg = 0; // 오류메시지
+    sqlite3_stmt* res;
+    int rc = sqlite3_open("/home/aiot11/Downloads/worknet", &db); //열고
+
+    std::string sql="SELECT * FROM companydata WHERE company = '"+Company+"';";
+    rc=sqlite3_prepare_v2(db,sql.c_str(),-1,&res,nullptr);
+    while((rc=sqlite3_step(res))==SQLITE_ROW)
+    {
+        Company=reinterpret_cast<const char>(sqlite3_column_text(stmt,0));
+        Made=reinterpret_cast<const char>(sqlite3_column_text(stmt,1));
+        Type=reinterpret_cast<const char>(sqlite3_column_text(stmt,2));
+        Members=reinterpret_cast<const char>(sqlite3_column_text(stmt,3));
+        Sales=reinterpret_cast<const char>(sqlite3_column_text(stmt,4));
+        Sectors=reinterpret_cast<const char>(sqlite3_column_text(stmt,5));
+        Hompage=reinterpret_cast<const char>(sqlite3_column_text(stmt,6));
+        Boss=reinterpret_cast<const char>(sqlite3_column_text(stmt,7));
+        Address=reinterpret_cast<const char>(sqlite3_column_text(stmt,8));
+        Job=reinterpret_cast<const char>(sqlite3_column_text(stmt,9));
+        system("clear");
+        std::cout<<"\t"<<"회사명: "<< Company <<std::endl;
+        std::cout<<"\t"<<"설립일: "<<Made<<std::endl;
+        std::cout<<"\t"<<"기업형태:"<<Type<<std::endl;
+        std::cout<<"\t"<<"사원수: "<<Members<<"명"<<std::endl;
+        std::cout<<"\t"<<"매출액: 약"<<Sales<<"원"<<std::endl;
+        std::cout<<"\t"<<"회사분야: "<<Sectors<<std::endl;
+        std::cout<<"\t"<<"회사 홈페이지: "<<Hompage<<std::endl;
+        std::cout<<"\t"<<"회사대표: "<<Boss<<std::endl;
+        std::cout<<"\t"<<"회사주소: "<<Address<<std::endl;
+        std::cout<<"\t"<<"회사업무: "<<Job<<std::endl;
+    }
+    sqlite3_finalize(res); //SQL 쿼리 핸들 정리
     sqlite3_close(db); //DB 닫기
 }
