@@ -8,35 +8,40 @@
 #include <ctime>
 
 void announcement(); //랜덤공고
-void start_image();
-void join_page();
-void search();
+void start_image();//시작 아스키아트
+void join_page(); // 회원가입
+void search(); // 검색
 int callback(void *, int, char **, char **);
-void log_in();
-void menu();
+void log_in(); // 로그인
+void menu(); // 메인 스위치
+void detail_search(); // 상세검색
+void search_numbers(); // 공고출력
 
+std::string user_search;
 int log_count = 0;
 
 int main()
 {
-    menu();
+    // menu();
+    // detail_search();
+    
+    search();
     return 0;
 }
 
 void menu()
 {
-    announcement();
     int choice = 0;
-    
-
     while(choice < 4)
     {
+        announcement();
         std::cout << "============================" << std::endl;
         std::cout << "1. 로그인" << std::endl;
         std::cout << "2. 회원가입" << std::endl;
         std::cout << "3. 검색" << std::endl;
         std::cout << "4. 종료" << std::endl;
         std::cout << "============================" << std::endl;
+        std::cout << "선택:";
         std::cin >> choice;
         switch (choice)
         {
@@ -186,6 +191,8 @@ void join_page() // 회원가입 페이지
     std::cout << "PW:" << join_pw << std::endl;
     std::cout << "e-mail:" <<join_email << std::endl;
     std::cout << "PNUM:" << join_pnum << std::endl;
+    sleep(3);
+    system("clear");
 }
 
 void log_in()
@@ -203,22 +210,25 @@ void log_in()
     std::cout << "ID:";
     std::cin >> log_id;
     std::cout << "PW:";
+    // std::cin >> log_pw;
     std::cin >> pw;
-    log_pw = std::to_string(pw);
+    log_pw = std::to_string(pw); // str 형변환
 
     while(1)
     {
         join = "SELECT USER_ID, PW FROM USER_DATA WHERE USER_ID = '"+ log_id +"' AND PW = '"+ log_pw + "';";
         sqlite3_stmt* res;
         rc = sqlite3_prepare_v2(db, join.c_str(), -1, &res, 0); // 준비
-         // 실행하기
 
+         // 실행하기
         if(sqlite3_step(res) == SQLITE_ROW) // db랑 사용자 입력이 같다면
         {
             system("clear");
             std::cout << "로그인 되었습니다." << std::endl;
             sleep(2);
             log_count++;
+            sqlite3_finalize(res); //SQL 쿼리 핸들 정리
+            sqlite3_close(db); //DB 닫기
             break;
         }
         else
@@ -232,8 +242,6 @@ void log_in()
             std::cin >> log_pw;
         }
     }
-    sqlite3_finalize(res); //SQL 쿼리 핸들 정리
-    sqlite3_close(db); //DB 닫기
 }
 
 int callback(void *NotUsed,int argc,char **argv, char **azColName)
@@ -242,10 +250,10 @@ int callback(void *NotUsed,int argc,char **argv, char **azColName)
     
     for (int i = 0; i < argc; i++)
     {
-        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+        printf("%s:%s\n", azColName[i], argv[i] ? argv[i] : "NULL");
     }
     
-    printf("\n");
+    std::cout << "\n";
     
     return 0;
 }
@@ -264,17 +272,21 @@ void start_image()
 
 void search()
 {
+    
     system("clear");
-    announcement();
+    system("color 42");
+    std::cout << "============================================" << std::endl;
+    announcement(); //랜덤공고 보여주기용
+    std::cout << "============================================" << std::endl;
+    // search_numbers();
     sqlite3 *db; //핸들, 파일디스크립터같은
     char *err_msg = 0; // 오류메시지
     sqlite3_stmt* res;
 
     //db 열고 입력값이랑 db저장된 갑이랑 비교하고 공고 출력해주기
     std::cout << "\t검색창" << std::endl;
-    std::cout << "키워드를 입력해주세요." << std::endl;
+    std::cout << "키워드를 입력해주세요(대문자로)." << std::endl;
     std::cout << "ex) C++, C, C#" << std::endl;
-    std::string user_search;
     std::cin >> user_search;
 
 
@@ -288,23 +300,117 @@ void search()
         exit(1);
     }
 
-    std::string search = "SELECT 회사명, 경력, 학력, 필요스킬 FROM resume WHERE 필요스킬 = '"+ user_search + "';";
-    
+    std::string search = "SELECT 회사명, 경력, 학력, 필요스킬 FROM resume WHERE 필요스킬 LIKE '%"+ user_search +"%';"; 
+                        
+    std::cout << "============================================" << std::endl;
     rc = sqlite3_exec(db, search.c_str(), callback, 0, &err_msg); //쿼리문 전달 및 실행
+    std::cout << "============================================" << std::endl;
+    search_numbers(); //검색건수
+
+    if(rc != SQLITE_ROW)
+    {
+        std::cout << "검색하신 키워드와 일치하는 공고가 없습니다." << std::endl;
+    }
+
     if(rc != SQLITE_OK)
     {
         std::cout << "error" << std::endl;
         exit(1);
     }
-
+    
+    //회사공고 들어가기
     std::cout << "공고상세정보 보기를 원하시면 회사명을 입력해주세요" << std::endl;
     std::cout << "검색:";
     std::string ser1;
     std::cin >> ser1;
-    std::string detail_search = "SELECT * FROM details WHERE 회사명 = '"+ ser1 +"';";
+    std::string detail_search = "SELECT * FROM details WHERE 회사명 LIKE  '%"+ ser1 +"';";
+    system("clear");
+    std::cout << "\n\n\n\n검색중:";
+    std::cout << " /#######_____________/" << std::endl;
     sleep(1);
+    system("clear");
+    std::cout << "\n\n\n\n검색중:";
+    std::cout << " /#############_______/" << std::endl;
+    sleep(1);
+    system("clear");
+    std::cout << "\n\n\n\n검색중:";
+    std::cout << " /####################/" << std::endl;
+    sleep(1);
+    system("clear");
+    
 
-    rc = sqlite3_exec(db, ser1.c_str(), callback, 0, &err_msg); //쿼리문 전달 및 실행
+    rc = sqlite3_exec(db, detail_search.c_str(), callback, 0, &err_msg); //쿼리문 전달 및 실행
+
+    if(rc != SQLITE_OK)
+    {
+        std::cout << "error" << std::endl;
+        exit(1);
+    }
+    int choice = 0;
+    std::cout << "1. 기업정보" << std::endl;
+    std::cin >> choice;
+    if(choice == 1)
+    {
+        std::string company_information = "SELECT 설립년도, 사원수, 산업 FROM resume WHERE 회사명 LIKE '%"+ ser1 + "';";
+        rc = sqlite3_exec(db, company_information.c_str(), callback, 0, &err_msg);
+        if(rc != SQLITE_OK)
+        {
+            std::cout << "error" << std::endl;
+        }
+    }
+
+    sqlite3_close(db); //DB 닫기
+}
+
+void detail_search()//상세검색
+{
+    sqlite3 *db; //핸들, 파일디스크립터같은
+    char *err_msg = 0; // 오류메시지
+
+    int rc = sqlite3_open("/home/aiot11/Downloads/worknet", &db); //db 열기
+    
+    std::string region, career, education;
+    std::cout << "지역" << std::endl;
+    std::cout << "- 서울" << std::endl;
+    std::cout << "- 경기" << std::endl;
+    std::cout << "- 대전" << std::endl;
+    std::cout << "- 부산" << std::endl;
+    std::cout << "- 광주" << std::endl;
+    std::cout << "- 대구" << std::endl;
+    std::cout << "- 인천" << std::endl;
+    std::cout << "- 울산" << std::endl;
+    std::cin >> region;
+
+    std::cout << "- 신입\n- 경력" << std::endl;
+    std::cin >> career;
+
+    std::cout << "학력:" << std::endl;
+    std::cout << "- 학력무관, " << std::endl;
+    std::cout << "- 고졸, " << std::endl;
+    std::cout << "- 초대졸이상, " << std::endl;
+    std::cout << "- 대졸(4년제이상)" << std::endl;
+    std::cin >> education;
+    system("clear");
+    std::cout << "\n\n\n검색중:";
+    std::cout << " /#######_____________/" << std::endl;
+    std::cout << "검색내용:" << region << ", " << career << ", " << education << std::endl;
+    sleep(1);
+    system("clear");
+    std::cout << "\n\n\n검색중:";
+    std::cout << " /#############_______/" << std::endl;
+    std::cout << "검색내용:" << region << ", " << career << ", " << education << std::endl;
+    sleep(1);
+    system("clear");
+    std::cout << "\n\n\n검색중:";
+    std::cout << " /####################/" << std::endl;
+    std::cout << "검색내용:" << region << ", " << career << ", " << education << std::endl;
+    sleep(1);
+    system("clear");
+    
+    std::string  search3= "SELECT * FROM resume WHERE 근무지역 LIKE '%"+ region +"%' AND 경력 LIKE '%"+ career +"%' AND 학력 LIKE '%"+ education +"%';";
+
+    rc = sqlite3_exec(db, search3.c_str(), callback, 0, &err_msg); //쿼리문 전달 및 실행
+    
 
     if(rc != SQLITE_OK)
     {
@@ -313,7 +419,6 @@ void search()
     }
 
     sqlite3_close(db); //DB 닫기
-
 }
 
 void announcement()
@@ -331,7 +436,7 @@ void announcement()
         exit(1);
     }
 
-    std::string random_announcement = "SELECT * FROM resume ORDER BY RANDOM() LIMIT 2;";
+    std::string random_announcement = "SELECT 회사명, 경력, 학력 FROM resume ORDER BY RANDOM() LIMIT 2;";
 
     rc = sqlite3_exec(db, random_announcement.c_str(), callback, 0, &err_msg); //쿼리문 전달 및 실행
     if(rc != SQLITE_OK)
@@ -342,38 +447,21 @@ void announcement()
     sqlite3_close(db); //DB 닫기
 }
 
-void test()
+void search_numbers() //검색건수 및 공고출력
 {
     sqlite3 *db; //핸들, 파일디스크립터같은
     char *err_msg = 0; // 오류메시지
     sqlite3_stmt* res;
     int rc = sqlite3_open("/home/aiot11/Downloads/worknet", &db); //열고
+    std::string search_num;
+    std::string sql = "SELECT COUNT(*) FROM resume WHERE 필요스킬 LIKE '%"+ user_search + "%';";
 
-    std::string sql="SELECT * FROM companydata WHERE company = '"+Company+"';";
     rc=sqlite3_prepare_v2(db,sql.c_str(),-1,&res,nullptr);
+
     while((rc=sqlite3_step(res))==SQLITE_ROW)
     {
-        Company=reinterpret_cast<const char>(sqlite3_column_text(stmt,0));
-        Made=reinterpret_cast<const char>(sqlite3_column_text(stmt,1));
-        Type=reinterpret_cast<const char>(sqlite3_column_text(stmt,2));
-        Members=reinterpret_cast<const char>(sqlite3_column_text(stmt,3));
-        Sales=reinterpret_cast<const char>(sqlite3_column_text(stmt,4));
-        Sectors=reinterpret_cast<const char>(sqlite3_column_text(stmt,5));
-        Hompage=reinterpret_cast<const char>(sqlite3_column_text(stmt,6));
-        Boss=reinterpret_cast<const char>(sqlite3_column_text(stmt,7));
-        Address=reinterpret_cast<const char>(sqlite3_column_text(stmt,8));
-        Job=reinterpret_cast<const char>(sqlite3_column_text(stmt,9));
-        system("clear");
-        std::cout<<"\t"<<"회사명: "<< Company <<std::endl;
-        std::cout<<"\t"<<"설립일: "<<Made<<std::endl;
-        std::cout<<"\t"<<"기업형태:"<<Type<<std::endl;
-        std::cout<<"\t"<<"사원수: "<<Members<<"명"<<std::endl;
-        std::cout<<"\t"<<"매출액: 약"<<Sales<<"원"<<std::endl;
-        std::cout<<"\t"<<"회사분야: "<<Sectors<<std::endl;
-        std::cout<<"\t"<<"회사 홈페이지: "<<Hompage<<std::endl;
-        std::cout<<"\t"<<"회사대표: "<<Boss<<std::endl;
-        std::cout<<"\t"<<"회사주소: "<<Address<<std::endl;
-        std::cout<<"\t"<<"회사업무: "<<Job<<std::endl;
+        search_num = reinterpret_cast<const char*>(sqlite3_column_text(res,0));
+        std::cout<< "검색건수: "<< search_num << std::endl << std::endl;
     }
     sqlite3_finalize(res); //SQL 쿼리 핸들 정리
     sqlite3_close(db); //DB 닫기

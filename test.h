@@ -1,14 +1,13 @@
 #ifndef TEST_H
 #define TEST_H
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <string.h>
-#include <unistd.h>
-#include <vector>
-#include <sstream>
 #include <sqlite3.h>
 #include <stdio.h>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <unistd.h>
+#include <cstdlib>
+#include <ctime>
 
 
 using namespace std;
@@ -22,8 +21,9 @@ class db
     std::string join_pw;
     std::string join_email;
     std::string join_pnum;
-    
+    int log_count = 0;
     public:
+
     
 };
 #endif
