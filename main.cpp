@@ -2,22 +2,7 @@
 
 int main()
 {
-    start main;
+    log main;
     main.menu();
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

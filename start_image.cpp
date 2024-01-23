@@ -4,7 +4,7 @@
 void start::start_image()
 {
     std::string line;
-    std::ifstream file("logo.txt");
+    std::ifstream file("saram.txt");
     while(getline(file,line))
     {
         std::cout << line << std::endl;

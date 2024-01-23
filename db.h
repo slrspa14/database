@@ -16,7 +16,6 @@ class start
 {
     public:
     void start_image();
-    void menu();
 };
 class join
 {
@@ -35,10 +34,11 @@ class log
     private:
     std::string log_id;
     std::string log_pw;
+    int log_count = 0;
 
     public:
+    void menu();
     void log_in();
-    int log_count = 0;
 };
 class searching
 {

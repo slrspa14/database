@@ -1,10 +1,10 @@
 #include "db.h"
 
-void start::menu()
+void log::menu()
 {
-    start_image();
+    start art;
+    art.start_image();
     int choice = 0;
-    log log_cnt;
     while(choice < 4)
     {
         searching an;
@@ -21,20 +21,19 @@ void start::menu()
         {
         case 1:
         {
-            if(log_cnt.log_count == 1)
+            if(log_count == 1)
             {
                 std::cout << "로그인 상태입니다." << std::endl;
                 sleep(1);
                 system("clear");
                 break;
             }
-            log login;
-            login.log_in();
+            log_in();
             break;
         }
         case 2:
         {
-            if(log_cnt.log_count == 1)
+            if(log_count == 1)
             {
                 std::cout << "로그인 상태입니다." << std::endl;
                 sleep(1);

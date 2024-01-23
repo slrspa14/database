@@ -9,6 +9,7 @@ void searching::search()
         std::cout << "============================" << std::endl;
         std::cout << "          1. 검색" << std::endl;
         std::cout << "        2. 상세검색" << std::endl;
+        std::cout << "       3. 메인페이지" << std::endl;
         std::cout << "============================" << std::endl;
         std::cout << "선택:";
         std::cin >> choice;
@@ -163,6 +164,11 @@ void searching::search()
         }
         else if(choice == 2)
             detail_search();
+        else if(choice == 3)
+        {
+            system("clear");
+            break;
+        }       
         break;
     }
 }
