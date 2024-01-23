@@ -60,7 +60,7 @@ void searching::search()
             sleep(1);
             system("clear");
 
-            std::string search = "SELECT 회사명, 경력, 학력, 필요스킬, 고용형태, 기업형태 FROM resume WHERE 필요스킬 LIKE '%"+ user_search +"%';"; 
+            std::string search = "SELECT 회사명, 경력, 학력, 필요스킬, 고용형태, 기업형태 FROM resume WHERE 필요스킬 LIKE '%"+ user_search +"%';";
 
             std::cout << "============================================" << std::endl;
             rc = sqlite3_exec(db, search.c_str(), callback, 0, &err_msg); //쿼리문 전달 및 실행
@@ -168,7 +168,7 @@ void searching::search()
         {
             system("clear");
             break;
-        }       
+        }
         break;
     }
 }

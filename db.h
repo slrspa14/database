@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 
 
 // using namespace std;
@@ -49,6 +50,7 @@ class searching
     std::string search3;
     std::string user_search;
     std::string main_page;
+    std::vector<std::string> company_code;
     
     public:
     void announcement();
