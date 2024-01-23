@@ -1,7 +1,7 @@
-#include "test.h"
+#include "db.h"
 
 // void test_work::start_image()
-void start_image()
+void start::start_image()
 {
     std::string line;
     std::ifstream file("logo.txt");
@@ -11,4 +11,5 @@ void start_image()
     }
     sleep(2);
     system("clear");
+    file.close();
 }
