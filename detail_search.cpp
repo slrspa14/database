@@ -62,13 +62,7 @@ void searching::detail_search()//상세검색
         
         sqlite3_stmt* res;
         std::string  search3 = "SELECT * FROM resume WHERE 근무지역 LIKE '%"+ region +"%' AND 경력 LIKE '%"+ career +"%' AND 학력 LIKE '%"+ education +"%';";
-        // std::string com_num = "SELECT 회사명 FROM resume WHERE 근무지역 LIKE '%"+ region +"%' AND 경력 LIKE '%"+ career +"%' AND 학력 LIKE '%"+ education +"%';";
-        // sqlite3_prepare_v2(db, com_num.c_str(), -1, &res, 0); // 회사코드용
-        // rc = sqlite3_step(res);
-        // if(rc == SQLITE_OK) // 회사이름용 //회사코드로 바꾸고
-        // {
-        //     company_code.push_back(reinterpret_cast<const char*>(sqlite3_column_text(res,0))); // 벡터에 회사코드 저장
-        // }
+
 
         std::cout << "============================================" << std::endl;
         rc = sqlite3_exec(db, search3.c_str(), callback, 0, &err_msg); //상세검색 출력
@@ -102,11 +96,6 @@ void searching::detail_search()//상세검색
             std::cout << "검색:";
             std::cin >> detail_company_name;
         }
-
-        // if(company_code.size() > 0) //회사 코드로 바꾸고
-        // {
-        //     std::cout << ""
-        // }
 
         std::string detail_announcement = "SELECT * FROM details WHERE 회사명 LIKE '%"+ detail_company_name + "%';";
         

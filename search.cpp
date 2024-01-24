@@ -70,7 +70,7 @@ void searching::search()
             {
                 std::string buf;
                 std::cout << "검색하신 키워드와 일치하는 공고가 없습니다." << std::endl;
-                std::cout << "메인페이로 이동을 원하시면 아무키를 입력해주세요." << std::endl;
+                std::cout << "메인페이지로 이동을 원하시면 아무키를 입력해주세요." << std::endl;
                 std::cout << "입력:";
                 std::cin >> buf;
                 system("clear");
@@ -86,7 +86,7 @@ void searching::search()
             //회사공고 들어가기
             std::cout << "공고상세정보 보기를 원하시면 회사명을 입력해주세요" << std::endl;
             std::cout << "검색:";
-            std::string ser1;
+            ser1;
             // getline(std::cin, ser1);
             std::cin >> ser1;
             while(ser1.size() < 9) //한글은 크기 3
@@ -119,10 +119,22 @@ void searching::search()
             sleep(1);
             system("clear");
 
+
+
             std::cout << "====================공고상세정보====================" << std::endl;
             rc = sqlite3_exec(db, detail_search.c_str(), callback, 0, &err_msg); //쿼리문 전달 및 실행
             std::cout << "====================================================" << std::endl;
 
+            if(search_numbers3() == "0")
+            {
+                std::string buf;
+                std::cout << "검색하신 키워드와 일치하는 공고가 없습니다." << std::endl;
+                std::cout << "메인페이지로 이동을 원하시면 아무키를 입력해주세요." << std::endl;
+                std::cout << "입력:";
+                std::cin >> buf;
+                system("clear");
+                break;
+            }
             //검색건수
             if(rc != SQLITE_OK)
             {

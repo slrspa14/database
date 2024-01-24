@@ -50,6 +50,7 @@ class searching
     std::string search3;
     std::string user_search;
     std::string main_page;
+    std::string ser1;
     std::vector<std::string> company_code;
     
     public:
@@ -59,6 +60,7 @@ class searching
     std::string search_numbers();
     std::string search_numbers1();
     std::string search_numbers2();
+    std::string search_numbers3();
     static int callback(void *, int, char **, char **);
 };
 #endif
