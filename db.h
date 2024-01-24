@@ -10,9 +10,6 @@
 #include <ctime>
 #include <vector>
 
-
-// using namespace std;
-
 class start
 {
     public:
@@ -49,7 +46,6 @@ class searching
     std::string education;
     std::string search3;
     std::string user_search;
-    std::string main_page;
     std::string ser1;
     std::vector<std::string> company_code;
     

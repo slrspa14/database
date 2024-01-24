@@ -2,8 +2,6 @@
 
 void log::menu()
 {
-    std::cout <<  "\x1b[46m" << std::endl;
-    std::cout <<  "\x1b[31m" << std::endl;
     start art;
     art.start_image();
     int choice = 0;

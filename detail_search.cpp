@@ -121,10 +121,10 @@ void searching::detail_search()//상세검색
         sleep(1);
         system("clear");
         
+
         std::cout << "================================" << std::endl;
         rc = sqlite3_exec(db, detail_announcement.c_str(), callback, 0, &err_msg); //쿼리문 전달 및 실행
         std::cout << "================================" << std::endl;
-        
         std::cout << "1. 기업정보" << std::endl;
         std::cout << "기업정보를 원하시면 1번 또는 ""기업정보""를 입력해주세요." << std::endl;
         std::string choice;
@@ -150,10 +150,11 @@ void searching::detail_search()//상세검색
             std::cout << "error" << std::endl;
             exit(1);
         }
-        std::cout << "메인페이지로 이동을 원하시면 아무키나 입력해주세요." << std::endl;
-        std::cin >> main_page;
 
-        sqlite3_finalize(res); //벡터 핸들정리
+        std::string main_back;
+        std::cout << "메인페이지로 이동을 원하시면 아무키나 입력해주세요." << std::endl;
+        std::cin >> main_back;
+        
         sqlite3_close(db); //DB 닫기
         system("clear");
         break;
